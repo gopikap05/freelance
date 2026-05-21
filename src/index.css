@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Finlandica+Headline:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --sans: 'Montserrat', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Finlandica Headline', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+}
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--heading);
+}
+
+code {
+  font-family: var(--mono);
+}
