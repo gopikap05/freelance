@@ -15,7 +15,7 @@ function Navbar() {
         <Toolbar sx={{ justifyContent: 'space-between', py: 1, px: { xs: 2, md: 4 } }}>
           <Box 
             component={Link} 
-            to="/" 
+            to="/freelance/" 
             sx={{ 
               fontSize: '24px', 
               fontWeight: 'bold', 
@@ -30,7 +30,7 @@ function Navbar() {
           <Box sx={{ display: 'flex', gap: 3 }}>
             <Button 
               component={Link} 
-              to="/" 
+              to="/freelance/" 
               sx={{ 
                 color: '#3d3529',
                 fontFamily: "'Montserrat', sans-serif",
@@ -43,7 +43,7 @@ function Navbar() {
             </Button>
             <Button 
               component={Link} 
-              to="/about" 
+              to="/freelance/about" 
               sx={{ 
                 color: '#3d3529',
                 fontFamily: "'Montserrat', sans-serif",
@@ -56,7 +56,7 @@ function Navbar() {
             </Button>
             <Button 
               component={Link} 
-              to="/service" 
+              to="/freelance/service" 
               sx={{ 
                 color: '#3d3529',
                 fontFamily: "'Montserrat', sans-serif",
@@ -69,7 +69,7 @@ function Navbar() {
             </Button>
             <Button 
               component={Link} 
-              to="/work" 
+              to="/freelance/work" 
               sx={{ 
                 color: '#3d3529',
                 fontFamily: "'Montserrat', sans-serif",
@@ -82,7 +82,7 @@ function Navbar() {
             </Button>
             <Button 
               component={Link} 
-              to="/process" 
+              to="/freelance/process" 
               sx={{ 
                 color: '#3d3529',
                 fontFamily: "'Montserrat', sans-serif",
@@ -95,7 +95,7 @@ function Navbar() {
             </Button>
             <Button 
               component={Link} 
-              to="/faq" 
+              to="/freelance/faq" 
               sx={{ 
                 color: '#3d3529',
                 fontFamily: "'Montserrat', sans-serif",
@@ -108,7 +108,7 @@ function Navbar() {
             </Button>
             <Button 
               component={Link} 
-              to="/contact" 
+              to="/freelance/contact" 
               sx={{ 
                 color: '#3d3529',
                 fontFamily: "'Montserrat', sans-serif",
