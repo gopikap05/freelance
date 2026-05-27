@@ -60,6 +60,19 @@ const services = [
   },
 ];
 
+const gridStyles = `
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(20px, 4vw, 28px);
+  }
+  @media (max-width: 640px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+`;
+
 function ServiceCard({ service, index }) {
   const [hovered, setHovered] = useState(false);
 
@@ -271,6 +284,7 @@ export default function ServiceCards() {
         fontFamily: "'Montserrat', sans-serif",
       }}
     >
+      <style>{gridStyles}</style>
       <div style={{ maxWidth: "1350px", margin: "0 auto" }}>
 
         {/* Header */}
@@ -310,13 +324,7 @@ export default function ServiceCards() {
         </div>
 
         {/* 2 columns on desktop, 1 column on mobile */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            gap: "clamp(20px, 4vw, 28px)",
-          }}
-        >
+        <div className="services-grid">
           {services.map((service, i) => (
             <ServiceCard key={i} service={service} index={i} />
           ))}
