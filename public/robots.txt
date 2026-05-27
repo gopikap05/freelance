@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gopikap05.github.io/freelance/sitemap.xml

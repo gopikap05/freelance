@@ -2,12 +2,14 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Freelance Developer</title>
+  <title>Redirecting...</title>
   <script>
-    sessionStorage.redirect = location.href;
-    location.replace('/freelance/');
+    const pathSegments = window.location.pathname.split('/freelance/');
+    const newPath = pathSegments.length > 1 ? '/freelance/' + pathSegments[1] : '/freelance/';
+    window.location.replace(newPath);
   </script>
 </head>
 <body>
+  Redirecting...
 </body>
 </html>

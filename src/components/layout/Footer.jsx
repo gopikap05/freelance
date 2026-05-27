@@ -20,7 +20,7 @@ function Footer() {
             fontSize: '14px'
           }}
         >
-          © 2026 FreelanceDev. All rights reserved.
+          © {new Date().getFullYear()} FreelanceDev. All rights reserved.
         </Typography>
       </Container>
     </Box>

@@ -1,24 +1,43 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TJWCBYK7L9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TJWCBYK7L9');
+    </script>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Freelance Web Developer</title>
-    <!-- Start Single Page Apps for GitHub Pages -->
-    <script type="text/javascript">
-      (function() {
-        var redirect = sessionStorage.redirect;
-        delete sessionStorage.redirect;
-        if (redirect && redirect !== location.href) {
-          history.replaceState(null, null, redirect);
-        }
-      })();
-    </script>
-    <!-- End Single Page Apps for GitHub Pages -->
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@0.2.28/bundled/lenis.js"></script> 
+    <script> 
+      const lenis = new Lenis({ 
+        duration: 1.2, 
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        direction: 'vertical',
+        gestureDirection: 'vertical',
+        smooth: true, 
+        mouseMultiplier: 1, 
+        smoothTouch: false, 
+        touchMultiplier: 2, 
+        infinite: false, 
+      }); 
+
+      function raf(time) { 
+        lenis.raf(time); 
+        requestAnimationFrame(raf); 
+      } 
+
+      requestAnimationFrame(raf); 
+    </script>
   </body>
 </html>

@@ -1,129 +1,268 @@
-import { Box, Typography, Grid } from '@mui/material';
-import CodeIcon from '@mui/icons-material/Code';
-import WebIcon from '@mui/icons-material/Web';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import SpeedIcon from '@mui/icons-material/Speed';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-function Services() {
-  const services = [
-    {
-      icon: <CodeIcon sx={{ fontSize: 45, color: '#8a9a5b' }} />,
-      title: 'React Development',
-      description: 'Modern, scalable web applications built with React, hooks, context API, and best practices.'
-    },
-    {
-      icon: <WebIcon sx={{ fontSize: 45, color: '#8a9a5b' }} />,
-      title: 'WordPress + Bricks',
-      description: 'Custom WordPress websites with Bricks Builder. Flexible, powerful, and easy to manage.'
-    },
-    {
-      icon: <ShoppingCartIcon sx={{ fontSize: 45, color: '#8a9a5b' }} />,
-      title: 'E-Commerce Solutions',
-      description: 'Fully functional online stores with WooCommerce, payment gateways, and inventory management.'
-    },
-    {
-      icon: <SpeedIcon sx={{ fontSize: 45, color: '#8a9a5b' }} />,
-      title: 'Performance Optimization',
-      description: 'Lightning-fast websites with optimized code, images, and Core Web Vitals.'
-    }
-  ];
+const ACCENT = "#8a9a5b";
+const ACCENT_HOVER = "#7a8a4b";
+
+const services = [
+  {
+    number: "01",
+    title: "React Development",
+    description:
+      "Modern, scalable web applications built with React, hooks, context API, and component-driven architecture.",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="16 18 22 12 16 6" />
+        <polyline points="8 6 2 12 8 18" />
+      </svg>
+    ),
+  },
+  {
+    number: "02",
+    title: "WordPress + Bricks",
+    description:
+      "Custom WordPress websites with Bricks Builder — flexible layouts, custom post types, and easy content management.",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+      </svg>
+    ),
+  },
+  {
+    number: "03",
+    title: "E-Commerce Solutions",
+    description:
+      "Fully functional online stores with WooCommerce, payment gateways, product catalogs, and inventory management.",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <path d="M16 10a4 4 0 01-8 0" />
+      </svg>
+    ),
+  },
+  {
+    number: "04",
+    title: "Performance Optimization",
+    description:
+      "Lightning-fast load times through optimized code, image compression, caching, and Core Web Vitals tuning.",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+      </svg>
+    ),
+  },
+];
+
+function ServiceCard({ service, index }) {
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <Box
-      sx={{
-        py: { xs: '40px', sm: '60px', md: '80px', lg: '100px' },
-        px: '5%',
-        bgcolor: '#ffffff'
-      }}
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
+      style={{ height: "100%" }}
     >
-      <Box sx={{ maxWidth: '1400px', mx: 'auto' }}>
-        <Typography
-          sx={{
+      <div
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        style={{
+          position: "relative",
+          padding: "36px 28px",
+          background: hovered ? "#fdf9f4" : "#ffffff",
+          border: `1px solid ${hovered ? "#d4c4a8" : "#ece5d8"}`,
+          borderTop: `3px solid ${hovered ? ACCENT : "transparent"}`,
+          borderRadius: "2px",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "16px",
+          transition: "all 0.3s ease",
+          cursor: "default",
+          boxSizing: "border-box",
+        }}
+      >
+        {/* Number */}
+        <span
+          style={{
+            position: "absolute",
+            top: "20px",
+            right: "24px",
+            fontSize: "14px",
             fontFamily: "'Montserrat', sans-serif",
-            fontSize: '14px',
-            color: '#8a9a5b',
-            letterSpacing: '3px',
-            mb: 2,
-            textTransform: 'uppercase',
-            textAlign: 'center'
+            fontWeight: 600,
+            letterSpacing: "2px",
+            color: hovered ? ACCENT : "#c8bfb0",
+            transition: "color 0.3s ease",
           }}
         >
-          What I Offer
-        </Typography>
+          {service.number}
+        </span>
 
-        <Typography
-          variant="h2"
-          sx={{
+        {/* Icon */}
+        <div
+          style={{
+            width: "48px",
+            height: "48px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: hovered ? `${ACCENT}18` : "#f5f0e8",
+            borderRadius: "50%",
+            color: hovered ? ACCENT : "#9a8c78",
+            transition: "all 0.3s ease",
+            flexShrink: 0,
+          }}
+        >
+          {service.icon}
+        </div>
+
+        {/* Title */}
+        <h3
+          style={{
+            margin: 0,
+            fontSize: "18px",
             fontFamily: "'Finlandica Headline', system-ui, sans-serif",
-            fontSize: { xs: '32px', md: '42px' },
-            color: '#3d3529',
-            fontWeight: 500,
-            mb: 2,
-            textAlign: 'center'
+            fontWeight: 600,
+            color: "#2e2820",
+            lineHeight: 1.3,
           }}
         >
-          Services to help you succeed online
-        </Typography>
+          {service.title}
+        </h3>
 
-        <Typography
-          sx={{
+        {/* Description */}
+        <p
+          style={{
+            margin: 0,
+            fontSize: "14px",
             fontFamily: "'Montserrat', sans-serif",
-            fontSize: '16px',
-            color: '#6b5e4a',
-            textAlign: 'center',
-            maxWidth: '600px',
-            mx: 'auto',
-            mb: 6
+            color: "#7a6e60",
+            lineHeight: 1.75,
+            flex: 1,
           }}
         >
-          Comprehensive solutions tailored to your business needs
-        </Typography>
-
-        <Grid container spacing={4}>
-          {services.map((service, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
-              <Box
-                sx={{
-                  textAlign: 'center',
-                  p: 4,
-                  bgcolor: '#faf7f2',
-                  borderRadius: 2,
-                  border: '1px solid #e8e0d5',
-                  transition: 'transform 0.2s ease',
-                  '&:hover': {
-                    transform: 'translateY(-5px)'
-                  }
-                }}
-              >
-                <Box sx={{ mb: 2 }}>{service.icon}</Box>
-                <Typography
-                  sx={{
-                    fontFamily: "'Finlandica Headline', system-ui, sans-serif",
-                    fontSize: '22px',
-                    color: '#3d3529',
-                    fontWeight: 600,
-                    mb: 2
-                  }}
-                >
-                  {service.title}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontFamily: "'Montserrat', sans-serif",
-                    fontSize: '14px',
-                    color: '#6b5e4a',
-                    lineHeight: 1.6
-                  }}
-                >
-                  {service.description}
-                </Typography>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    </Box>
+          {service.description}
+        </p>
+      </div>
+    </motion.div>
   );
 }
 
-export default Services;
+export default function Services() {
+  const navigate = useNavigate();
+
+  const handleViewAll = () => {
+    navigate("/service");
+  };
+
+  const [btnHovered, setBtnHovered] = useState(false);
+
+  return (
+    <section
+      style={{
+        padding: "clamp(60px, 10vw, 120px) 5%",
+        background: "#ffffff",
+        fontFamily: "'Montserrat', sans-serif",
+      }}
+    >
+      <div style={{ maxWidth: "1350px", margin: "0 auto" }}>
+
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: "64px" }}>
+          <p
+            style={{
+              margin: "0 0 16px",
+              fontSize: "14px",
+              letterSpacing: "3.5px",
+              textTransform: "uppercase",
+              color: ACCENT,
+              fontWeight: 600,
+            }}
+          >
+            What I Offer
+          </p>
+
+          <div
+            style={{
+              width: "32px",
+              height: "1.5px",
+              background: ACCENT,
+              margin: "0 auto 20px",
+              opacity: 0.6,
+            }}
+          />
+
+          <h2
+            style={{
+              margin: "0 0 16px",
+              fontSize: "clamp(28px, 4vw, 42px)",
+              fontFamily: "'Finlandica Headline', system-ui, sans-serif",
+              fontWeight: 600,
+              color: "#2e2820",
+              lineHeight: 1.2,
+            }}
+          >
+            Services to help you succeed online
+          </h2>
+
+          <p
+            style={{
+              margin: "0 auto",
+              maxWidth: "560px",
+              fontSize: "16px",
+              color: "#7a6e60",
+              lineHeight: 1.7,
+            }}
+          >
+            Tailored frontend solutions — from concept to a live, polished product.
+          </p>
+        </div>
+
+        {/* Grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: "28px",
+          }}
+        >
+          {services.map((service, i) => (
+            <ServiceCard key={i} service={service} index={i} />
+          ))}
+        </div>
+
+        {/* Button */}
+        <div style={{ textAlign: "center", marginTop: "52px" }}>
+          <button
+            onClick={handleViewAll}
+            onMouseEnter={() => setBtnHovered(true)}
+            onMouseLeave={() => setBtnHovered(false)}
+            style={{
+              background: btnHovered ? ACCENT : "none",
+              border: `1.5px solid ${ACCENT}`,
+              padding: "14px 40px",
+              fontSize: "14px",
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 600,
+              letterSpacing: "1.5px",
+              textTransform: "uppercase",
+              color: btnHovered ? "#ffffff" : ACCENT,
+              cursor: "pointer",
+              transition: "all 0.3s ease",
+              borderRadius: "2px",
+            }}
+          >
+            View All Services
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}

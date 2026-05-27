@@ -1,9 +1,4 @@
 import { useState } from 'react';
-import { Box, Typography, Grid, TextField, Button, Paper, Snackbar, Alert } from '@mui/material';
-import EmailIcon from '@mui/icons-material/Email';
-import PhoneIcon from '@mui/icons-material/Phone';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import ScheduleIcon from '@mui/icons-material/Schedule';
 
 function ContactForm() {
   const [formData, setFormData] = useState({
@@ -15,360 +10,420 @@ function ContactForm() {
     timeline: '',
     message: ''
   });
-  
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+
+  const [errors, setErrors] = useState({});
+  const [toast, setToast] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    // Clear error for this field when user starts typing
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: '' });
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    setSnackbar({ open: true, message: 'Message sent successfully! I\'ll get back to you within 24 hours.', severity: 'success' });
-    setFormData({
-      fullName: '',
-      email: '',
-      phone: '',
-      projectType: '',
-      budget: '',
-      timeline: '',
-      message: ''
-    });
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required';
+    if (!formData.email.trim()) newErrors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
+    if (!formData.message.trim()) newErrors.message = 'Project details are required';
+    
+    return newErrors;
   };
+
+  const handleSubmit = () => {
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    
+    // Form is valid - handle submission
+    setFormData({ fullName: '', email: '', phone: '', projectType: '', budget: '', timeline: '', message: '' });
+    setErrors({});
+    setToast(true);
+    setTimeout(() => setToast(false), 5000);
+  };
+
+  const inputStyle = (hasError) => ({
+    fontFamily: "'Montserrat', sans-serif",
+    fontSize: '14px',
+    color: '#3d3529',
+    background: '#fff',
+    border: hasError ? '1px solid #e74c3c' : '0.5px solid #ddd6ca',
+    borderRadius: '8px',
+    padding: '10px 13px',
+    outline: 'none',
+    width: '100%',
+    boxSizing: 'border-box',
+  });
+
+  const labelStyle = {
+    fontFamily: "'Montserrat', sans-serif",
+    fontSize: '14px',
+    fontWeight: 600,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    color: '#7a6e5f',
+    marginBottom: '5px',
+    display: 'block',
+  };
+
+  const errorStyle = {
+    fontFamily: "'Montserrat', sans-serif",
+    fontSize: '14px',
+    color: '#e74c3c',
+    marginTop: '4px',
+    display: 'block',
+  };
+
+  const infoItems = [
+    { icon: '✉', label: 'Email', value: 'gopikap026@gmail.com', link: 'mailto:gopikap026@gmail.com' },
+    { icon: '🔗', label: 'LinkedIn', value: 'linkedin.com/in/gopika05', link: 'https://www.linkedin.com/in/gopika05/' },
+    { icon: '⌖', label: 'Location', value: 'Available Worldwide (Remote)' },
+    { icon: '◷', label: 'Response Time', value: 'Within 24 hours' },
+  ];
 
   return (
-    <Box
-      sx={{
-        py: { xs: '40px', sm: '60px', md: '80px', lg: '100px' },
-        px: '5%',
-        bgcolor: '#ffffff'
+    <div
+      style={{
+        padding: '64px 5%',
+        background: '#ffffff',
+        fontFamily: "'Montserrat', sans-serif",
       }}
     >
-      <Box sx={{ maxWidth: '1400px', mx: 'auto' }}>
-        <Grid container spacing={6}>
-          {/* Left Side - Contact Info */}
-          <Grid item xs={12} md={5}>
-            <Paper
-              elevation={0}
-              sx={{
-                p: 4,
-                bgcolor: '#f5f0e8',
-                borderRadius: 2,
-                border: '1px solid #e8e0d5',
-                height: '100%'
-              }}
-            >
-              <Typography
-                sx={{
-                  fontFamily: "'Finlandica Headline', system-ui, sans-serif",
-                  fontSize: '28px',
-                  color: '#3d3529',
-                  fontWeight: 600,
-                  mb: 3
-                }}
-              >
-                Contact Information
-              </Typography>
+      <div
+        style={{
+          maxWidth: '1350px',
+          margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '28px',
+        }}
+      >
+        {/* Left — Contact Info */}
+        <div
+          style={{
+            background: '#f7f3ec',
+            border: '0.5px solid #e0d9ce',
+            borderRadius: '14px',
+            padding: '36px',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: '14px',
+              fontWeight: 600,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: '#8a9a5b',
+              marginBottom: '10px',
+            }}
+          >
+            Get in touch
+          </p>
 
-              <Typography
-                sx={{
-                  fontFamily: "'Montserrat', sans-serif",
-                  fontSize: '14px',
-                  color: '#6b5e4a',
-                  mb: 4,
-                  lineHeight: 1.6
-                }}
-              >
-                Feel free to reach out through any of these channels. I typically respond within 24 hours.
-              </Typography>
+          <h2
+            style={{
+              fontFamily: "'Finlandica Headline', system-ui, sans-serif",
+              fontSize: '24px',
+              fontWeight: 600,
+              color: '#3d3529',
+              marginBottom: '10px',
+              lineHeight: 1.25,
+            }}
+          >
+            Contact Information
+          </h2>
 
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mb: 4 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <EmailIcon sx={{ color: '#8a9a5b', fontSize: 28 }} />
-                  <Box>
-                    <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontSize: '12px', color: '#8a9a5b' }}>
-                      Email
-                    </Typography>
-                    <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontSize: '16px', color: '#3d3529', fontWeight: 500 }}>
-                      hello@freelancedev.com
-                    </Typography>
-                  </Box>
-                </Box>
+          <p
+            style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: '14px',
+              color: '#7a6e5f',
+              lineHeight: 1.7,
+              marginBottom: '32px',
+            }}
+          >
+            Feel free to reach out through any of these channels.
+          </p>
 
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <PhoneIcon sx={{ color: '#8a9a5b', fontSize: 28 }} />
-                  <Box>
-                    <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontSize: '12px', color: '#8a9a5b' }}>
-                      Phone
-                    </Typography>
-                    <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontSize: '16px', color: '#3d3529', fontWeight: 500 }}>
-                      +1 (555) 123-4567
-                    </Typography>
-                  </Box>
-                </Box>
-
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <LocationOnIcon sx={{ color: '#8a9a5b', fontSize: 28 }} />
-                  <Box>
-                    <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontSize: '12px', color: '#8a9a5b' }}>
-                      Location
-                    </Typography>
-                    <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontSize: '16px', color: '#3d3529', fontWeight: 500 }}>
-                      Available Worldwide (Remote)
-                    </Typography>
-                  </Box>
-                </Box>
-
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <ScheduleIcon sx={{ color: '#8a9a5b', fontSize: 28 }} />
-                  <Box>
-                    <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontSize: '12px', color: '#8a9a5b' }}>
-                      Response Time
-                    </Typography>
-                    <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontSize: '16px', color: '#3d3529', fontWeight: 500 }}>
-                      Within 24 hours
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-
-              <Box
-                sx={{
-                  p: 3,
-                  bgcolor: '#ffffff',
-                  borderRadius: 2,
-                  border: '1px solid #e8e0d5',
-                  textAlign: 'center'
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontFamily: "'Montserrat', sans-serif",
-                    fontSize: '13px',
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '32px', flex: 1 }}>
+            {infoItems.map(({ icon, label, value, link }) => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <div
+                  style={{
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '8px',
+                    background: '#edeae3',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    fontSize: '16px',
                     color: '#8a9a5b',
-                    lineHeight: 1.6
                   }}
                 >
-                  ⚡ Weekend replies may take slightly longer. 
-                  For urgent inquiries, please mention "URGENT" in your message subject.
-                </Typography>
-              </Box>
-            </Paper>
-          </Grid>
+                  {icon}
+                </div>
+                <div>
+                  <p
+                    style={{
+                      fontFamily: "'Montserrat', sans-serif",
+                      fontSize: '14px',
+                      color: '#8a9a5b',
+                      letterSpacing: '0.05em',
+                      textTransform: 'uppercase',
+                      marginBottom: '2px',
+                    }}
+                  >
+                    {label}
+                  </p>
+                  {link ? (
+                    <a
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        fontFamily: "'Montserrat', sans-serif",
+                        fontSize: '14px',
+                        color: '#3d3529',
+                        fontWeight: 500,
+                        textDecoration: 'none',
+                        transition: 'color 0.2s',
+                      }}
+                      onMouseEnter={(e) => e.target.style.color = '#8a9a5b'}
+                      onMouseLeave={(e) => e.target.style.color = '#3d3529'}
+                    >
+                      {value}
+                    </a>
+                  ) : (
+                    <p
+                      style={{
+                        fontFamily: "'Montserrat', sans-serif",
+                        fontSize: '14px',
+                        color: '#3d3529',
+                        fontWeight: 500,
+                      }}
+                    >
+                      {value}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
 
-          {/* Right Side - Contact Form */}
-          <Grid item xs={12} md={7}>
-            <Paper
-              elevation={0}
-              component="form"
-              onSubmit={handleSubmit}
-              sx={{
-                p: 4,
-                bgcolor: '#faf7f2',
-                borderRadius: 2,
-                border: '1px solid #e8e0d5'
+          {/* Response time note */}
+          <div
+            style={{
+              background: '#fff',
+              border: '0.5px solid #e0d9ce',
+              borderRadius: '10px',
+              padding: '14px 16px',
+              marginTop: 'auto',
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: '14px',
+                color: '#8a9a5b',
+                lineHeight: 1.6,
+                margin: 0,
               }}
             >
-              <Typography
-                sx={{
-                  fontFamily: "'Finlandica Headline', system-ui, sans-serif",
-                  fontSize: '28px',
-                  color: '#3d3529',
-                  fontWeight: 600,
-                  mb: 3
-                }}
-              >
-                Tell Me About Your Project
-              </Typography>
+              ⏱ I typically respond within 24 hours. Looking forward to hearing from you!
+            </p>
+          </div>
+        </div>
 
-              <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Full Name *"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    required
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        bgcolor: '#ffffff',
-                        '& fieldset': { borderColor: '#e8e0d5' },
-                        '&:hover fieldset': { borderColor: '#8a9a5b' }
-                      },
-                      '& .MuiInputLabel-root': { color: '#6b5e4a' }
-                    }}
-                  />
-                </Grid>
+        {/* Right — Contact Form */}
+        <div
+          style={{
+            background: '#faf7f2',
+            border: '0.5px solid #e0d9ce',
+            borderRadius: '14px',
+            padding: '36px',
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: '14px',
+              fontWeight: 600,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: '#8a9a5b',
+              marginBottom: '10px',
+            }}
+          >
+            Let's work together
+          </p>
 
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Email Address *"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        bgcolor: '#ffffff',
-                        '& fieldset': { borderColor: '#e8e0d5' },
-                        '&:hover fieldset': { borderColor: '#8a9a5b' }
-                      },
-                      '& .MuiInputLabel-root': { color: '#6b5e4a' }
-                    }}
-                  />
-                </Grid>
+          <h2
+            style={{
+              fontFamily: "'Finlandica Headline', system-ui, sans-serif",
+              fontSize: '24px',
+              fontWeight: 600,
+              color: '#3d3529',
+              marginBottom: '24px',
+              lineHeight: 1.25,
+            }}
+          >
+            Tell Me About Your Project
+          </h2>
 
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Phone Number (Optional)"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        bgcolor: '#ffffff',
-                        '& fieldset': { borderColor: '#e8e0d5' },
-                        '&:hover fieldset': { borderColor: '#8a9a5b' }
-                      },
-                      '& .MuiInputLabel-root': { color: '#6b5e4a' }
-                    }}
-                  />
-                </Grid>
+          {/* Toast */}
+          {toast && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                background: '#eef4e2',
+                border: '0.5px solid #c8d9a0',
+                borderRadius: '8px',
+                padding: '12px 16px',
+                marginBottom: '20px',
+              }}
+            >
+              <span style={{ fontSize: '16px' }}>✓</span>
+              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '14px', color: '#3d5c1a' }}>
+                Message sent! I'll get back to you within 24 hours.
+              </p>
+            </div>
+          )}
 
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Project Type *"
-                    name="projectType"
-                    placeholder="e.g., React Website, WordPress + Bricks, E-Commerce"
-                    value={formData.projectType}
-                    onChange={handleChange}
-                    required
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        bgcolor: '#ffffff',
-                        '& fieldset': { borderColor: '#e8e0d5' },
-                        '&:hover fieldset': { borderColor: '#8a9a5b' }
-                      },
-                      '& .MuiInputLabel-root': { color: '#6b5e4a' }
-                    }}
-                  />
-                </Grid>
+          {/* Row 1 */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px', marginBottom: '14px' }}>
+            <div>
+              <label style={labelStyle}>Full name *</label>
+              <input 
+                name="fullName" 
+                value={formData.fullName} 
+                onChange={handleChange} 
+                placeholder="Jane Smith" 
+                style={inputStyle(!!errors.fullName)} 
+              />
+              {errors.fullName && <span style={errorStyle}>{errors.fullName}</span>}
+            </div>
+            <div>
+              <label style={labelStyle}>Email address *</label>
+              <input 
+                name="email" 
+                type="email" 
+                value={formData.email} 
+                onChange={handleChange} 
+                placeholder="jane@example.com" 
+                style={inputStyle(!!errors.email)} 
+              />
+              {errors.email && <span style={errorStyle}>{errors.email}</span>}
+            </div>
+          </div>
 
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Budget Range *"
-                    name="budget"
-                    placeholder="e.g., $1000-$2000"
-                    value={formData.budget}
-                    onChange={handleChange}
-                    required
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        bgcolor: '#ffffff',
-                        '& fieldset': { borderColor: '#e8e0d5' },
-                        '&:hover fieldset': { borderColor: '#8a9a5b' }
-                      },
-                      '& .MuiInputLabel-root': { color: '#6b5e4a' }
-                    }}
-                  />
-                </Grid>
+          {/* Row 2 */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px', marginBottom: '14px' }}>
+            <div>
+              <label style={labelStyle}>Phone number</label>
+              <input 
+                name="phone" 
+                type="tel" 
+                value={formData.phone} 
+                onChange={handleChange} 
+                placeholder="+91 12345 67890" 
+                style={inputStyle(false)} 
+              />
+            </div>
+            <div>
+              <label style={labelStyle}>Project type</label>
+              <input 
+                name="projectType" 
+                value={formData.projectType} 
+                onChange={handleChange} 
+                placeholder="React, WordPress, E-Commerce…" 
+                style={inputStyle(false)} 
+              />
+            </div>
+          </div>
 
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Expected Timeline *"
-                    name="timeline"
-                    placeholder="e.g., 2-4 weeks, 1-2 months"
-                    value={formData.timeline}
-                    onChange={handleChange}
-                    required
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        bgcolor: '#ffffff',
-                        '& fieldset': { borderColor: '#e8e0d5' },
-                        '&:hover fieldset': { borderColor: '#8a9a5b' }
-                      },
-                      '& .MuiInputLabel-root': { color: '#6b5e4a' }
-                    }}
-                  />
-                </Grid>
+          {/* Row 3 */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px', marginBottom: '14px' }}>
+            <div>
+              <label style={labelStyle}>Budget range</label>
+              <input 
+                name="budget" 
+                value={formData.budget} 
+                onChange={handleChange} 
+                placeholder="e.g. ₹15,000–₹30,000" 
+                style={inputStyle(false)} 
+              />
+            </div>
+            <div>
+              <label style={labelStyle}>Expected timeline</label>
+              <input 
+                name="timeline" 
+                value={formData.timeline} 
+                onChange={handleChange} 
+                placeholder="e.g. 2–4 weeks" 
+                style={inputStyle(false)} 
+              />
+            </div>
+          </div>
 
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Project Details *"
-                    name="message"
-                    multiline
-                    rows={6}
-                    placeholder="Tell me about your project, goals, and any specific requirements..."
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        bgcolor: '#ffffff',
-                        '& fieldset': { borderColor: '#e8e0d5' },
-                        '&:hover fieldset': { borderColor: '#8a9a5b' }
-                      },
-                      '& .MuiInputLabel-root': { color: '#6b5e4a' }
-                    }}
-                  />
-                </Grid>
-              </Grid>
+          {/* Row 4 */}
+          <div style={{ marginBottom: '14px' }}>
+            <label style={labelStyle}>Project details *</label>
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              rows={5}
+              placeholder="Tell me about your goals and any specific requirements…"
+              style={{ ...inputStyle(!!errors.message), resize: 'vertical' }}
+            />
+            {errors.message && <span style={errorStyle}>{errors.message}</span>}
+          </div>
 
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                size="large"
-                sx={{
-                  mt: 4,
-                  bgcolor: '#8a9a5b',
-                  fontFamily: "'Montserrat', sans-serif",
-                  textTransform: 'none',
-                  fontSize: '16px',
-                  py: 1.5,
-                  '&:hover': {
-                    bgcolor: '#7a8a4b'
-                  }
-                }}
-              >
-                Send Message
-              </Button>
+          <button
+            onClick={handleSubmit}
+            style={{
+              width: '100%',
+              padding: '13px',
+              background: '#8a9a5b',
+              color: '#fff',
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: '14px',
+              fontWeight: 600,
+              letterSpacing: '0.05em',
+              border: 'none',
+              borderRadius: '9px',
+              cursor: 'pointer',
+              marginTop: '6px',
+            }}
+          >
+            Send Message
+          </button>
 
-              <Typography
-                sx={{
-                  fontFamily: "'Montserrat', sans-serif",
-                  fontSize: '12px',
-                  color: '#6b5e4a',
-                  textAlign: 'center',
-                  mt: 2
-                }}
-              >
-                * Required fields. I'll respond within 24 hours.
-              </Typography>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Box>
-
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-      >
-        <Alert severity={snackbar.severity} sx={{ width: '100%' }}>
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-    </Box>
+          <p
+            style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: '14px',
+              color: '#9a8e7f',
+              textAlign: 'center',
+              marginTop: '10px',
+            }}
+          >
+            * Required fields. I'll respond within 24 hours.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
 

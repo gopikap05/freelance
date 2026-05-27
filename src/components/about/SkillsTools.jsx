@@ -1,196 +1,293 @@
-import { Box, Typography, Grid, LinearProgress } from '@mui/material';
-import CodeIcon from '@mui/icons-material/Code';
-import StorageIcon from '@mui/icons-material/Storage';
-import DesignServicesIcon from '@mui/icons-material/DesignServices';
-import SpeedIcon from '@mui/icons-material/Speed';
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
-function SkillsTools() {
-  const skills = [
-    { name: 'React / Next.js', level: 90 },
-    { name: 'WordPress / Bricks', level: 88 },
-    { name: 'JavaScript / TypeScript', level: 85 },
-    { name: 'HTML / CSS / MUI', level: 92 }
-  ];
+const ACCENT = "#8a9a5b";
 
-  const tools = [
-    'VS Code', 'Git / GitHub', 'Figma', 'Bricks Builder',
-    'WooCommerce', 'Tailwind CSS', 'Framer Motion', 'Vite / Webpack'
-  ];
+const skills = [
+  { name: "React / Next.js", level: 90 },
+  { name: "WordPress / Bricks", level: 88 },
+  { name: "JavaScript / TypeScript", level: 85 },
+  { name: "HTML / CSS / Tailwind", level: 92 },
+];
 
+const tools = [
+  "VS Code",
+  "Git / GitHub",
+  "Figma",
+  "Bricks Builder",
+  "WooCommerce",
+  "Tailwind CSS",
+  "Framer Motion",
+  "Vite / Webpack",
+];
+
+function SkillBar({ skill, index, animate }) {
   return (
-    <Box
-      sx={{
-        py: { xs: '40px', sm: '60px', md: '80px', lg: '100px' },
-        px: '5%',
-        bgcolor: '#f5f0e8'
-      }}
-    >
-      <Box sx={{ maxWidth: '1400px', mx: 'auto' }}>
-        <Grid container spacing={6}>
-          {/* Left Side - Skills */}
-          <Grid item xs={12} md={6}>
-            <Typography
-              sx={{
-                fontFamily: "'Montserrat', sans-serif",
-                fontSize: '14px',
-                color: '#8a9a5b',
-                letterSpacing: '3px',
-                mb: 2,
-                textTransform: 'uppercase'
-              }}
-            >
-              My Expertise
-            </Typography>
+    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "baseline",
+        }}
+      >
+        <span
+          style={{
+            fontSize: "14px",
+            fontFamily: "'Montserrat', sans-serif",
+            fontWeight: 600,
+            color: "#2e2820",
+            letterSpacing: "0.3px",
+          }}
+        >
+          {skill.name}
+        </span>
+        <span
+          style={{
+            fontSize: "14px",
+            fontFamily: "'Finlandica Headline', system-ui, sans-serif",
+            fontWeight: 600,
+            color: ACCENT,
+          }}
+        >
+          {skill.level}%
+        </span>
+      </div>
 
-            <Typography
-              variant="h2"
-              sx={{
-                fontFamily: "'Finlandica Headline', system-ui, sans-serif",
-                fontSize: { xs: '32px', md: '42px' },
-                color: '#3d3529',
-                fontWeight: 500,
-                mb: 4
-              }}
-            >
-              Skills & Strengths
-            </Typography>
-
-            {skills.map((skill, index) => (
-              <Box key={index} sx={{ mb: 3 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                  <Typography
-                    sx={{
-                      fontFamily: "'Montserrat', sans-serif",
-                      fontSize: '14px',
-                      color: '#3d3529',
-                      fontWeight: 500
-                    }}
-                  >
-                    {skill.name}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontFamily: "'Montserrat', sans-serif",
-                      fontSize: '14px',
-                      color: '#8a9a5b'
-                    }}
-                  >
-                    {skill.level}%
-                  </Typography>
-                </Box>
-                <LinearProgress
-                  variant="determinate"
-                  value={skill.level}
-                  sx={{
-                    height: 6,
-                    borderRadius: 3,
-                    bgcolor: '#e8e0d5',
-                    '& .MuiLinearProgress-bar': {
-                      bgcolor: '#8a9a5b',
-                      borderRadius: 3
-                    }
-                  }}
-                />
-              </Box>
-            ))}
-          </Grid>
-
-          {/* Right Side - Tools */}
-          <Grid item xs={12} md={6}>
-            <Typography
-              sx={{
-                fontFamily: "'Montserrat', sans-serif",
-                fontSize: '14px',
-                color: '#8a9a5b',
-                letterSpacing: '3px',
-                mb: 2,
-                textTransform: 'uppercase'
-              }}
-            >
-              My Toolkit
-            </Typography>
-
-            <Typography
-              variant="h2"
-              sx={{
-                fontFamily: "'Finlandica Headline', system-ui, sans-serif",
-                fontSize: { xs: '32px', md: '42px' },
-                color: '#3d3529',
-                fontWeight: 500,
-                mb: 4
-              }}
-            >
-              Tools I Use Daily
-            </Typography>
-
-            <Grid container spacing={2}>
-              {tools.map((tool, index) => (
-                <Grid item xs={6} sm={4} key={index}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1,
-                      bgcolor: '#ffffff',
-                      p: 1.5,
-                      borderRadius: 2,
-                      border: '1px solid #e8e0d5'
-                    }}
-                  >
-                    <CodeIcon sx={{ fontSize: 18, color: '#8a9a5b' }} />
-                    <Typography
-                      sx={{
-                        fontFamily: "'Montserrat', sans-serif",
-                        fontSize: '13px',
-                        color: '#3d3529'
-                      }}
-                    >
-                      {tool}
-                    </Typography>
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
-
-            {/* Work Style Highlight */}
-            <Box
-              sx={{
-                mt: 4,
-                p: 3,
-                bgcolor: '#ffffff',
-                borderRadius: 2,
-                borderLeft: '4px solid #8a9a5b'
-              }}
-            >
-              <Typography
-                sx={{
-                  fontFamily: "'Finlandica Headline', system-ui, sans-serif",
-                  fontSize: '18px',
-                  color: '#3d3529',
-                  fontWeight: 600,
-                  mb: 1
-                }}
-              >
-                My Work Style
-              </Typography>
-              <Typography
-                sx={{
-                  fontFamily: "'Montserrat', sans-serif",
-                  fontSize: '14px',
-                  color: '#6b5e4a',
-                  lineHeight: 1.6
-                }}
-              >
-                I believe in iterative development — delivering value early and often. 
-                You'll receive regular updates, and your feedback is always incorporated 
-                throughout the process. No surprises, just results.
-              </Typography>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-    </Box>
+      {/* Track */}
+      <div
+        style={{
+          width: "100%",
+          height: "5px",
+          background: "#ece5d8",
+          borderRadius: "3px",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            height: "100%",
+            width: animate ? `${skill.level}%` : "0%",
+            background: ACCENT,
+            borderRadius: "3px",
+            transition: `width 0.9s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.12}s`,
+          }}
+        />
+      </div>
+    </div>
   );
 }
 
-export default SkillsTools;
+export default function SkillsTools() {
+  const [animate, setAnimate] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setAnimate(true); },
+      { threshold: 0.2 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const fadeUp = (delay = 0) => ({
+    initial: { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-40px" },
+    transition: { duration: 0.5, delay, ease: "easeOut" },
+  });
+
+  return (
+    <section
+      style={{
+        padding: "clamp(60px, 10vw, 120px) 5%",
+        background: "#f5f0e8",
+        fontFamily: "'Montserrat', sans-serif",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "1350px",
+          margin: "0 auto",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          gap: "clamp(40px, 6vw, 80px)",
+          alignItems: "start",
+        }}
+      >
+        {/* Left — Skills */}
+        <motion.div
+          ref={ref}
+          {...fadeUp(0)}
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <p
+            style={{
+              margin: "0 0 16px",
+              fontSize: "14px",
+              letterSpacing: "3.5px",
+              textTransform: "uppercase",
+              color: ACCENT,
+              fontWeight: 600,
+            }}
+          >
+            My Expertise
+          </p>
+
+          <div
+            style={{
+              width: "32px",
+              height: "1.5px",
+              background: ACCENT,
+              marginBottom: "20px",
+              opacity: 0.6,
+            }}
+          />
+
+          <h2
+            style={{
+              margin: "0 0 36px",
+              fontSize: "clamp(26px, 3.5vw, 38px)",
+              fontFamily: "'Finlandica Headline', system-ui, sans-serif",
+              fontWeight: 500,
+              color: "#2e2820",
+              lineHeight: 1.2,
+            }}
+          >
+            Skills & Strengths
+          </h2>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+            {skills.map((skill, i) => (
+              <SkillBar key={i} skill={skill} index={i} animate={animate} />
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Right — Tools + Work Style */}
+        <motion.div {...fadeUp(0.15)} style={{ display: "flex", flexDirection: "column" }}>
+          <p
+            style={{
+              margin: "0 0 16px",
+              fontSize: "14px",
+              letterSpacing: "3.5px",
+              textTransform: "uppercase",
+              color: ACCENT,
+              fontWeight: 600,
+            }}
+          >
+            My Toolkit
+          </p>
+
+          <div
+            style={{
+              width: "32px",
+              height: "1.5px",
+              background: ACCENT,
+              marginBottom: "20px",
+              opacity: 0.6,
+            }}
+          />
+
+          <h2
+            style={{
+              margin: "0 0 28px",
+              fontSize: "clamp(26px, 3.5vw, 38px)",
+              fontFamily: "'Finlandica Headline', system-ui, sans-serif",
+              fontWeight: 500,
+              color: "#2e2820",
+              lineHeight: 1.2,
+            }}
+          >
+            Tools I Use Daily
+          </h2>
+
+          {/* Tool tags */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "12px",
+              marginBottom: "36px",
+            }}
+          >
+            {tools.map((tool, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, scale: 0.92 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: 0.15 + i * 0.05, ease: "easeOut" }}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "8px 16px",
+                  background: "#ffffff",
+                  border: "1px solid #e0d8cc",
+                  borderRadius: "2px",
+                  fontSize: "14px",
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontWeight: 500,
+                  color: "#4a3f33",
+                  letterSpacing: "0.3px",
+                }}
+              >
+                {/* Dot indicator */}
+                <span
+                  style={{
+                    width: "6px",
+                    height: "6px",
+                    borderRadius: "50%",
+                    background: ACCENT,
+                    flexShrink: 0,
+                    opacity: 0.7,
+                  }}
+                />
+                {tool}
+              </motion.span>
+            ))}
+          </div>
+
+          {/* Work style callout */}
+          <div
+            style={{
+              padding: "28px",
+              background: "#ffffff",
+              borderLeft: `3px solid ${ACCENT}`,
+              borderRadius: "0 2px 2px 0",
+              border: "1px solid #e0d8cc",
+              borderLeftWidth: "3px",
+              borderLeftColor: ACCENT,
+            }}
+          >
+            <h3
+              style={{
+                margin: "0 0 12px",
+                fontSize: "16px",
+                fontFamily: "'Finlandica Headline', system-ui, sans-serif",
+                fontWeight: 600,
+                color: "#2e2820",
+              }}
+            >
+              My Work Style
+            </h3>
+            <p
+              style={{
+                margin: 0,
+                fontSize: "14px",
+                color: "#7a6e60",
+                lineHeight: 1.8,
+              }}
+            >
+              I believe in iterative development — delivering value early and often.
+              You'll receive regular updates, and your feedback is always incorporated
+              throughout the process. No surprises, just results.
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
